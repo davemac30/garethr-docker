@@ -42,6 +42,7 @@ class docker::service (
   $execdriver           = $docker::execdriver,
   $storage_driver       = $docker::storage_driver,
   $tmp_dir              = $docker::tmp_dir,
+  $lvm_storage          = $docker::lvm_storage,
 ) {
   $dns_array = any2array($dns)
   $dns_search_array = any2array($dns_search)
@@ -127,7 +128,7 @@ class docker::service (
       ensure  => present,
       force   => true,
       content => template('/etc/sysconfig/docker-storage-setup.erb'),
-      notify  => Service['docker'],
+#      notify  => Service['docker'],
     }
   }
 
