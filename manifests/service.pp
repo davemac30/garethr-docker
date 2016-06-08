@@ -122,6 +122,15 @@ class docker::service (
     }
   }
 
+  if $lvm_storage {
+   file { '/etc/sysconfig/docker-storage-setup':
+      ensure  => present,
+      force   => true,
+      content => template('/etc/sysconfig/docker-storage-setup.erb'),
+      notify  => Service['docker'],
+    }
+  }
+
   $provider = $::operatingsystem ? {
     'Ubuntu' => 'upstart',
     default  => undef,
