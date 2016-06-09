@@ -63,7 +63,7 @@ class docker::service (
               ensure => 'link',
               target => '/lib/init/upstart-job',
               force  => true,
-#              notify => Service['docker'],
+              before => Service['docker'],
           }
         }
       }
@@ -72,7 +72,7 @@ class docker::service (
         ensure  => present,
         force   => true,
         content => template('docker/etc/default/docker.erb'),
-#       notify  => Service['docker'],
+        before  => Service['docker'],
       }
     }
     'RedHat': {
@@ -88,14 +88,14 @@ class docker::service (
         ensure  => present,
         force   => true,
         content => template("docker/etc/sysconfig/${template}"),
-#      notify  => Service['docker'],
+        before  => Service['docker'],
       }
 
       file { '/etc/sysconfig/docker-storage':
         ensure  => present,
         force   => true,
         content => template('docker/etc/sysconfig/docker-storage.erb'),
-#        notify  => Service['docker'],
+        before  => Service['docker'],
       }
     }
     'Archlinux': {
@@ -115,7 +115,7 @@ class docker::service (
           ensure  => present,
           force   => true,
           content => template('docker/etc/conf.d/docker.erb'),
-#          notify  => Service['docker'];
+          before  => Service['docker'];
       }
     }
     default: {
@@ -128,7 +128,15 @@ class docker::service (
       ensure  => present,
       force   => true,
       content => template('/etc/sysconfig/docker-storage-setup.erb'),
-#      notify  => Service['docker'],
+      notify  => Exec['docker-storage-setup'],
+      before  => Service['docker'],
+    }
+
+    exec {'docker-storage-setup':
+      command     => 'docker-storage-setup',
+      path        => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
+      refreshonly => true,
+      before      => Service['docker'],
     }
   }
 
