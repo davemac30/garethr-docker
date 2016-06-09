@@ -42,7 +42,6 @@ class docker::service (
   $execdriver           = $docker::execdriver,
   $storage_driver       = $docker::storage_driver,
   $tmp_dir              = $docker::tmp_dir,
-  $lvm_storage          = $docker::lvm_storage,
 ) {
   $dns_array = any2array($dns)
   $dns_search_array = any2array($dns_search)
@@ -120,23 +119,6 @@ class docker::service (
     }
     default: {
       fail('Docker needs a Debian, RedHat or Archlinux based system.')
-    }
-  }
-
-  if $lvm_storage {
-   file { '/etc/sysconfig/docker-storage-setup':
-      ensure  => present,
-      force   => true,
-      content => template('/etc/sysconfig/docker-storage-setup.erb'),
-      notify  => Exec['docker-storage-setup'],
-      before  => Service['docker'],
-    }
-
-    exec {'docker-storage-setup':
-      command     => 'docker-storage-setup',
-      path        => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-      refreshonly => true,
-      before      => Service['docker'],
     }
   }
 
