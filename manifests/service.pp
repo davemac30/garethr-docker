@@ -90,12 +90,12 @@ class docker::service (
         before  => Service['docker'],
       }
 
-      file { '/etc/sysconfig/docker-storage':
-        ensure  => present,
-        force   => true,
-        content => template('docker/etc/sysconfig/docker-storage.erb'),
-        before  => Service['docker'],
-      }
+#      file { '/etc/sysconfig/docker-storage':
+#        ensure  => present,
+#        force   => true,
+#        content => template('docker/etc/sysconfig/docker-storage.erb'),
+#        before  => Service['docker'],
+#      }
     }
     'Archlinux': {
       $hasstatus  = true
