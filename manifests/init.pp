@@ -187,7 +187,6 @@ class docker(
   $service_name                = $docker::params::service_name,
   $docker_command              = $docker::params::docker_command,
   $docker_users                = [],
-  $lvm_storage                 = false,
 ) inherits docker::params {
 
   validate_string($version)
