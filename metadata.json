@@ -1,5 +1,5 @@
 {
-  "name": "garethr-docker",
+  "name": "davemac30/garethr-docker",
   "version": "4.0.2",
   "author": "Gareth Rushgrove",
   "summary": "Module for installing and managing docker",
